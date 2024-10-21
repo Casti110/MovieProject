@@ -1,11 +1,33 @@
 
-@TestRequests_hostAddress = https://localhost:7006
+@TestRequests_hostAddress = http://localhost:5174
 
 
 
 ### GET Request
-GET {{TestRequests_hostAddress}}/api/DirectorDTO
+GET {{TestRequests_hostAddress}}/api/Director/2
 Accept: application/json
 
 
+###
+
+### POST Request  
+POST {{TestRequests_hostAddress}}/api/Director
+{  
+  id : 3,
+  "name": "Jhon Travolta",
+
+
+}
+
+###
+
+### POST Request  
+POST {{TestRequests_hostAddress}}/api/Movie
+{  
+  id : 1,
+  "title": "Matrix",
+  "year": 2000,
+
+}
+###
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieProject.Models;
 using MovieProject.Data;
+using MovieProjectWebAPI.DTO;
 
 namespace MovieProjectWebAPI.Controllers
 {   
@@ -18,12 +19,20 @@ namespace MovieProjectWebAPI.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> GetAll(){
-        return await _context.Reviews.ToListAsync();
+    public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAll(){
+        return await _context.Reviews
+        .Select( or => new ReviewDTO
+        {
+            Id = or.Id,
+            Rating = or.Rating,
+            Description = or.Description,
+            MovieId = or.MovieId,
+
+        }).ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> GetReviewByID(int id)
+    public async Task<ActionResult<ReviewDTO>> GetReviewByID(int id)
     {
         var review = await _context.Reviews.FindAsync(id);
 
@@ -32,16 +41,35 @@ namespace MovieProjectWebAPI.Controllers
             return NotFound();
         }
 
-        return Ok(review);
+        var reviewDTO = new ReviewDTO
+        {
+            Id = review.Id,
+            Rating = review.Rating,
+            Description = review.Description,
+            MovieId = review.MovieId,
+
+        };
+
+            return Ok(reviewDTO);
     }
 
     [HttpPost]
-    public async Task<ActionResult> PostMovie(Review review)
+    public async Task<ActionResult> PostMovie(ReviewDTO reviewDTO)
     {
-        _context.Reviews.Add(review);
+        var otherReview = new Review
+        {
+            UserName = reviewDTO.UserName,
+            Rating = reviewDTO.Rating,
+            Description = reviewDTO.Description,
+            MovieId = reviewDTO.MovieId,
+        };
+
+
+
+        _context.Reviews.Add(otherReview);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetReviewByID), new {id = review.Id}, review);
+        return CreatedAtAction(nameof(GetReviewByID), new {id = reviewDTO.Id}, reviewDTO);
 
     }
         

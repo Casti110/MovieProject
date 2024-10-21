@@ -1,12 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MovieProject.Models;
+using MovieProjectWebAPI.Models;
+
 
 
 namespace MovieProject.Data
 
 
 {
-    public class MovieContext : DbContext
+    public class MovieContext : IdentityDbContext<User>
     {
         public MovieContext(DbContextOptions<MovieContext> options) : base(options)
         {
@@ -16,10 +20,7 @@ namespace MovieProject.Data
         public DbSet<Director> Directors { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            
-        }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

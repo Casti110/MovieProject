@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieProject.Models;
 using MovieProject.Data;
 using MovieProjectWebAPI.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieProjectWebAPI.Controllers
 
@@ -55,6 +56,7 @@ namespace MovieProjectWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> PostDirector(DirectorDTO directorDTO)
         {   
             var otherDirector = new Director

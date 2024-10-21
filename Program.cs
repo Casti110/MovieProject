@@ -1,8 +1,12 @@
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MovieProject.Controllers;
+using MovieProjectWebAPI.Controllers;
 using MovieProject.Data;
+using Mapster;
+
+using Microsoft.AspNetCore.Identity;
+using MovieProjectWebAPI.Models;
 
 
 
@@ -17,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MovieContext>(options => options.UseSqlite(@"C:\Users\cupra\SE3\databasemovie.db"));
 
 //Add services
-
+builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<MovieContext>();
 //Add controllers
 builder.Services.AddScoped<MovieController>();
 
@@ -41,6 +45,14 @@ app.UseAuthorization();
 app.UseRouting();
 
 app.MapControllers();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapGroup("identity").MapIdentityApi<User>();
+
+app.UseAuthentication(); 
+app.UseAuthorization(); 
+
 
 
 app.Run();

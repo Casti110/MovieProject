@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieProject.Models;
 using MovieProject.Data;
+using MovieProjectWebAPI.DTO;
 
-using SQLitePCL;
-
-
-namespace MovieProject.Controllers;
-
-
-
+namespace MovieProjectWebAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class MovieController : ControllerBase
@@ -24,12 +19,21 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetAll(){
-        return await _context.Movies.ToListAsync();
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetAll(){
+        return await _context.Movies
+        .Select(om => new MovieDTO
+        {
+            Id = om.Id,
+            Title = om.Title,
+            Year = om.Year,
+            DirectorId = om.DirectorId,
+
+
+        }).ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Movie>> GetMovieByID(int id)
+    public async Task<ActionResult<MovieDTO>> GetMovieByID(int id)
     {
         var movie = await _context.Movies.FindAsync(id);
 
@@ -38,16 +42,32 @@ public class MovieController : ControllerBase
             return NotFound();
         }
 
-        return Ok(movie);
+        var movieDTO = new MovieDTO
+        {
+            Id = movie.Id,
+            Title = movie.Title,
+            Year = movie.Year,
+            DirectorId = movie.DirectorId,
+
+        };
+
+        return Ok(movieDTO);
     }
 
     [HttpPost]
-    public async Task<ActionResult> PostMovie(Movie movie)
+    public async Task<ActionResult> PostMovie(MovieDTO movieDTO)
     {
+        var movie = new Movie
+        {
+            Title = movieDTO.Title,
+            Year = movieDTO.Year,
+            DirectorId = movieDTO.DirectorId,
+        };
+
         _context.Movies.Add(movie);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetMovieByID), new {id = movie.Id}, movie);
+        return CreatedAtAction(nameof(GetMovieByID), new {id = movieDTO.Id}, movieDTO);
 
     }
 

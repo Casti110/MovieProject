@@ -1,0 +1,11 @@
+
+@TestRequests_hostAddress = https://localhost:7006
+
+
+
+### GET Request
+GET {{TestRequests_hostAddress}}/api/DirectorDTO
+Accept: application/json
+
+
+

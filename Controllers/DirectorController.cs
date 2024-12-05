@@ -56,7 +56,7 @@ namespace MovieProjectWebAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+       
         public async Task<ActionResult> PostDirector(DirectorDTO directorDTO)
         {   
             var otherDirector = new Director

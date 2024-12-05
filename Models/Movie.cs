@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieProject.Models
 {
@@ -9,15 +10,16 @@ namespace MovieProject.Models
 
         [StringLength(100)]
         [Required]
-        public string Title {get; set;}
+        public string Title { get; set; }
 
-        [Range(1950,2050)]
-        public int? Year {get; set;}
+        [Range(1950, 2050)]
+        public int Year { get; set; }
 
-        public int? DirectorId { get; set; }
+        [ForeignKey("Director")]
+        public int DirectorId { get; set; }
         public Director? Director { get; set; }
 
-        public ICollection<Review>? Reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; } = [];
 
     }
 }

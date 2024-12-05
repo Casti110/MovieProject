@@ -12,9 +12,8 @@ namespace MovieProjectWebAPI.DTO
         [Range(1, 10)]
         public int Rating { get; set; }
 
-        public string? Description { get; set; }
+        public string Description { get; set; }
         public int MovieId { get; set; }
     
-
     }
 }

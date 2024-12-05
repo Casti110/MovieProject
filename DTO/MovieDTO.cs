@@ -11,10 +11,9 @@ namespace MovieProjectWebAPI.DTO
         public string Title { get; set; }
 
         [Range(1950, 2050)]
-        public int? Year { get; set; }
+        public int Year { get; set; }
 
-        public int? DirectorId { get; set; }
-
+        public int DirectorId { get; set; }
         
     }
 }

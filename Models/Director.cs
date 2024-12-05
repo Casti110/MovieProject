@@ -10,6 +10,7 @@ namespace MovieProject.Models
         [StringLength(50)]
         public string? Name { get; set; }
 
-        public ICollection<Movie>? Movies { get; set; }
+        public ICollection<Movie> Movies { get; set; } = [];
+
     }
 }
